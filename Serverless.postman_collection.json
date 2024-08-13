@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "b157c44f-4659-462a-acaf-685a3f3f7665",
+		"name": "Serverless",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24772546"
+	},
+	"item": [
+		{
+			"name": "Book",
+			"item": [
+				{
+					"name": "GET Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{awsURL}}/books/",
+							"host": [
+								"{{awsURL}}"
+							],
+							"path": [
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{awsURL}}/books/:id",
+							"host": [
+								"{{awsURL}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"libro 3\",\r\n    \"summary\" : \"string\",\r\n    \"author\" : \"string\",\r\n    \"publisher\": \"string\",\r\n    \"date\" : \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{awsURL}}/books/",
+							"host": [
+								"{{awsURL}}"
+							],
+							"path": [
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\" : \"new titl  sdfsdfdgsdgf\",\r\n    \"summary\" : \"string\",\r\n    \"author\" : \"string\",\r\n    \"publisher\": \"string\",\r\n    \"date\" : \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/books/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/books/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "GET Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/users/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/users/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET User Comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/users/:userId/comments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								":userId",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST User",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "Pablo2",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"Pablo2\",\r\n    \"email\": \"pablitodetriana@gmail.com\",\r\n    \"password\" : \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/api/v1/auth/signin",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\" : \"nick nuevo\",\r\n    \"email\" : \"nickNuevo@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/users/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE  User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/users/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

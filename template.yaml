@@ -1,0 +1,329 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  books-serverless
+
+  Sample SAM Template for books-serverless
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 128
+
+Resources:
+  getAllBooks:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: books.GetAllBooks::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaGetAllBooks:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/books
+            Method: GET
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable      
+  getBookById:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: books.GetBookById::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaGetBookById:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/books/{id}
+            Method: GET
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable  
+  createBook:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: books.CreateBook::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaCreateBook:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/books
+            Method: POST
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable              
+  deleteBook:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: books.DeleteBook::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaDeleteBook:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/books/{id}
+            Method: DELETE
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable              
+  updateBook:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: books.UpdateBook::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaUpdateBook:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/books/{id}
+            Method: PUT
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable              
+  getAllReviews:
+      Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+      Properties:
+        CodeUri: src
+        Handler: reviews.GetAllReviews::handleRequest
+        Runtime: java11
+        Architectures:
+          - x86_64
+        MemorySize: 512
+        Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+          Variables:
+            JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+        Events:
+          lambdaGetAllReviews:
+            Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+            Properties:
+              Path: /api/v1/reviews
+              Method: GET
+        Policies:
+          - DynamoDBCrudPolicy:
+              TableName: !Ref ReviewsTable                 
+  getReviewById:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: reviews.GetReviewById::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaGetReviewById:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/reviews/{id}
+            Method: GET
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ReviewsTable               
+  createReview:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: reviews.CreateReview::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaCreateReview:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/reviews
+            Method: POST
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ReviewsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable
+  deleteReview:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: reviews.DeleteReview::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaDeleteReview:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/reviews/{id}
+            Method: DELETE
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ReviewsTable               
+  updateReview:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: reviews.UpdateReview::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaUpdateReview:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api/v1/reviews/{id}
+            Method: PUT    
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ReviewsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable
+
+  BooksTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: books
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  ReviewsTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: reviews
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  BooksApi:
+    Description: "API Gateway endpoint URL for Prod stage for Books"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/api/v1/books/"
+  ReviewsApi:
+    Description: "API Gateway endpoint URL for Prod stage for Reviews"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/api/v1/reviews/"
+
+  getAllBooks:
+    Description: "getAllBooks Lambda Function ARN"
+    Value: !GetAtt getAllBooks.Arn
+  getAllBooksIamRole:
+    Description: "Implicit IAM Role created for getAllBooks"
+    Value: !GetAtt getAllBooksRole.Arn
+  GetBookById:
+    Description: "GetBookById Lambda Function ARN"
+    Value: !GetAtt getBookById.Arn
+  GetBookByIdIamRole:
+    Description: "Implicit IAM Role created for GetBookById"
+    Value: !GetAtt getBookByIdRole.Arn    
+  CreateBook:
+    Description: "CreateBook Lambda Function ARN"
+    Value: !GetAtt createBook.Arn
+  CreateBookIamRole:
+    Description: "Implicit IAM Role created for CreateBook"
+    Value: !GetAtt createBookRole.Arn  
+  DeleteBook:
+    Description: "DeleteBook Lambda Function ARN"
+    Value: !GetAtt deleteBook.Arn
+  DeleteBookIamRole:
+    Description: "Implicit IAM Role created for DeleteBook"
+    Value: !GetAtt deleteBookRole.Arn  
+  UpdateBook:
+    Description: "UpdateBook Lambda Function ARN"
+    Value: !GetAtt updateBook.Arn
+  UpdateBookIamRole:
+    Description: "Implicit IAM Role created for UpdateBook"
+    Value: !GetAtt updateBookRole.Arn  
+
+  getAllReviews:
+    Description: "getAllReviews Lambda Function ARN"
+    Value: !GetAtt getAllReviews.Arn
+  getAllReviewsIamRole:
+    Description: "Implicit IAM Role created for getAllReviews"
+    Value: !GetAtt getAllReviewsRole.Arn
+  GetReviewById:
+    Description: "GetReviewById Lambda Function ARN"
+    Value: !GetAtt getReviewById.Arn
+  GetReviewByIdIamRole:
+    Description: "Implicit IAM Role created for GetReviewById"
+    Value: !GetAtt getReviewByIdRole.Arn    
+  CreateReview:
+    Description: "CreateReview Lambda Function ARN"
+    Value: !GetAtt createReview.Arn
+  CreateReviewIamRole:
+    Description: "Implicit IAM Role created for CreateReview"
+    Value: !GetAtt createReviewRole.Arn  
+  DeleteReview:
+    Description: "DeleteReview Lambda Function ARN"
+    Value: !GetAtt deleteReview.Arn
+  DeleteReviewIamRole:
+    Description: "Implicit IAM Role created for DeleteReview"
+    Value: !GetAtt deleteReviewRole.Arn  
+  UpdateReview:
+    Description: "UpdateReview Lambda Function ARN"
+    Value: !GetAtt updateReview.Arn
+  UpdateReviewIamRole:
+    Description: "Implicit IAM Role created for UpdateReview"
+    Value: !GetAtt updateReviewRole.Arn      
